@@ -1,6 +1,7 @@
 <p align="center">
     <img src="img/flutterlogo.png" alt="Flutter Logo" />
 </p>
+
 # Flutter Extended Zeplin Extension 💻
 
 This is a new Flutter Extended version of the actual extension to help a lot of people who need more components than TextStyles and Colors and RichTexts. With this new one you have the opportunity to have more info about Widgets, for example, generate Container elements, BoxDecoration Widget with Shadows, Linear Gradients, Fills, Borders, Opacity and several components more. Coming soon RadialGradient and SweapGradient and also Components as buttons and others. 
