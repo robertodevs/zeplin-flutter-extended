@@ -317,7 +317,7 @@ function getShadows(context, shadows){
 
 
 /*
-The functions below are used for generate Flutter Widgets Objects to DART CODE,
+The functions below are used to generate Flutter Widgets Objects to DART CODE,
 */
 
 /**
@@ -560,7 +560,7 @@ function convertRichTextToDart(textSpans){
 
 
 /*
-The functions below are used for create all
+The functions below are used to create all
 the Widget Objects from Flutter, this part try organize
 better the final code 
 */
