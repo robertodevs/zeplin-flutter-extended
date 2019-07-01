@@ -10,9 +10,9 @@
     "publish": "zem publish"
   },
   "zeplin": {
-    "displayName": "zeplin-flutter-extended",
+    "displayName": "Flutter Extended",
     "platforms": [
-      "web"
+      "web", "android", "ios"
     ]
   },
   "dependencies": {

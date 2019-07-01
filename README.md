@@ -1,4 +1,4 @@
-# Sample Zeplin Extension
+# Flutter Extended Zeplin Extension
 
 [Zeplin](https://zeplin.io) extension that generates sample snippets.
 

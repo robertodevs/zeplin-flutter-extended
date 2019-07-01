@@ -109,6 +109,17 @@ ${convertTextStylesListToDart(context).join("\n")}`;
 
 // }
 
+
+/*
+The functions below are used for generate Flutter Widgets,
+Container, BoxDecoration, Shadows, etc. 
+*/
+
+/**
+ * 
+ * @param {*} context 
+ * @param {*} layer 
+ */
 function buildingBoxDecoration(context, layer){
     // Getting a new decoration Box
     var decoration = new BoxDecoration();
@@ -145,6 +156,11 @@ function buildingBoxDecoration(context, layer){
 
 }
 
+/**
+ * 
+ * @param {*} context 
+ * @param {*} layer 
+ */
 function getTextElement(context, layer){
     var body;
 
@@ -202,6 +218,11 @@ function getTextElement(context, layer){
     return body;
 }
 
+/**
+ * 
+ * @param {*} context 
+ * @param {*} layer 
+ */
 function getContainer(context, layer){
     var container = new Container(layer.rect.width, layer.rect.height);
     container.decoration = buildingBoxDecoration(context, layer);
@@ -210,7 +231,11 @@ function getContainer(context, layer){
 
 }
 
-
+/**
+ * 
+ * @param {*} context 
+ * @param {*} layer 
+ */
 function getGradient(context, layer){
     if(layerHasGradient(context, layer))
     {
@@ -238,7 +263,11 @@ function getGradient(context, layer){
     return null;
 
 }
-
+/**
+ * 
+ * @param {*} context 
+ * @param {*} layer 
+ */
 function getBorder(context, layer){
 
     // Adding Shadows to the Layer
@@ -260,6 +289,11 @@ function getBorder(context, layer){
 
 }
 
+/**
+ * 
+ * @param {*} context 
+ * @param {*} shadows 
+ */
 function getShadows(context, shadows){
     // Adding Shadows to the Layer
     if(shadows.length > 0){
@@ -282,7 +316,14 @@ function getShadows(context, shadows){
 }
 
 
-// Converting the container model to dart code
+/*
+The functions below are used for generate Flutter Widgets Objects to DART CODE,
+*/
+
+/**
+ * 
+ * @param {*} container 
+ */
 function convertContainerToDart(container){
     var decorationElements = [];
 
@@ -316,6 +357,12 @@ function convertContainerToDart(container){
 )`
 }
 
+/**
+ * 
+ * @param {*} color 
+ * @param {*} opacity 
+ * @param {*} multipleColors 
+ */
 function convertColorToDart(color, opacity, multipleColors){
 
     var space;
@@ -333,6 +380,10 @@ function convertColorToDart(color, opacity, multipleColors){
 
 }
 
+/**
+ * 
+ * @param {*} textSelected 
+ */
 function convertTextToDart(textSelected){
 
     return `new Text("${textSelected.text}",
@@ -340,7 +391,10 @@ function convertTextToDart(textSelected){
 )`;
 
 }
-
+/**
+ * 
+ * @param {*} textSelected 
+ */
 function convertTextSpanToDart(textSelected){
 
     return `\n\tnew TextSpan(
@@ -349,7 +403,10 @@ function convertTextSpanToDart(textSelected){
     )`;
 
 }
-
+/**
+ * 
+ * @param {*} textStyle 
+ */
 function convertTextStyleToDart(textStyle){
     var shadowElements;
     var letterSpacingElement;
@@ -383,7 +440,10 @@ function convertTextStyleToDart(textStyle){
     )`;
 
 }
-
+/**
+ * 
+ * @param {*} gradient 
+ */
 function convertGradientToDart(gradient){
     if (gradient.type === 'linear'){
         return `LinearGradient(colors: [${gradient.colors.map(
@@ -401,6 +461,10 @@ function convertGradientToDart(gradient){
 
 }
 
+/**
+ * 
+ * @param {*} shadows 
+ */
 function convertShadowsToDart(shadows){
 
     return `[${shadows.map(
@@ -411,6 +475,10 @@ function convertShadowsToDart(shadows){
 `;
 }
 
+/**
+ * 
+ * @param {*} shadow 
+ */
 function convertBoxShadowToDart(shadow){
     return `BoxShadow(
         color: ${convertColorToDart(shadow.color,1, false)},
@@ -421,7 +489,10 @@ function convertBoxShadowToDart(shadow){
     )`;
     
 }
-
+/**
+ * 
+ * @param {*} border 
+ */
 function convertBorderToDart(border){
     return `Border.all(
       color: ${convertColorToDart(border.color,1, false)},
@@ -429,7 +500,10 @@ function convertBorderToDart(border){
     )`;
     
 }
-
+/**
+ * 
+ * @param {*} context 
+ */
 function convertColorsListToDart(context){
     colors = [];
     context.project.colors.map(
@@ -440,7 +514,10 @@ function convertColorsListToDart(context){
     );
     return colors;
 }
-
+/**
+ * 
+ * @param {*} context 
+ */
 function convertTextStylesListToDart(context){
     textStyles = [];
     context.project.textStyles.map(
@@ -463,7 +540,10 @@ function convertTextStylesListToDart(context){
     return textStyles;
 }
 
-
+/**
+ * 
+ * @param {*} textSpans 
+ */
 function convertRichTextToDart(textSpans){
     
 
@@ -478,6 +558,21 @@ function convertRichTextToDart(textSpans){
 )`;
 }
 
+
+/*
+The functions below are used for create all
+the Widget Objects from Flutter, this part try organize
+better the final code 
+*/
+
+/**
+ * 
+ * @param {*} color 
+ * @param {*} offsetx 
+ * @param {*} offsety 
+ * @param {*} blurRadius 
+ * @param {*} spreadRadius 
+ */
 function BoxShadow(color, offsetx, offsety, blurRadius, spreadRadius){
     this.color = color;
     this.offsetx = offsetx;
@@ -487,6 +582,13 @@ function BoxShadow(color, offsetx, offsety, blurRadius, spreadRadius){
 
 }
 
+/**
+ * 
+ * @param {*} type 
+ * @param {*} colors 
+ * @param {*} stops 
+ * @param {*} angle 
+ */
 function Gradient(type, colors, stops, angle){
     this.type = type;
     this.colors = colors;
@@ -494,6 +596,11 @@ function Gradient(type, colors, stops, angle){
     this.angle = angle;
 }
 
+/**
+ * 
+ * @param {*} color 
+ * @param {*} width 
+ */
 // Border Flutter
 function Border(color, width){
     this.color = color;
@@ -507,6 +614,12 @@ function Color(r,g,b,a){
     this.a = a;
 }
 
+/**
+ * 
+ * @param {*} width 
+ * @param {*} height 
+ * @param {*} decoration 
+ */
 // This is a function to model Shape as DART Container Flutter
 function Container(width, height, decoration) {
     this.width = width;
@@ -514,6 +627,15 @@ function Container(width, height, decoration) {
     this.decoration = decoration;
 }
 
+/**
+ * 
+ * @param {*} color 
+ * @param {*} border 
+ * @param {*} borderRadius 
+ * @param {*} shadows 
+ * @param {*} gradient 
+ * @param {*} opacity 
+ */
 // This is a function to model BoxDecoration in Flutter
 function BoxDecoration(color, border, borderRadius, shadows, gradient, opacity){
     this.color = color;
@@ -524,12 +646,27 @@ function BoxDecoration(color, border, borderRadius, shadows, gradient, opacity){
     this.opacity = opacity;
 }
 
+/**
+ * 
+ * @param {*} text 
+ * @param {*} textStyle 
+ */
 // This is a funtion to model Text in Flutter
 function Text(text, textStyle){
     this.text = text;
     this.textStyle = textStyle;
 }
-
+/**
+ * 
+ * @param {*} fontFamily 
+ * @param {*} color 
+ * @param {*} fontSize 
+ * @param {*} fontWeight 
+ * @param {*} fontStyle 
+ * @param {*} letterSpacing 
+ * @param {*} height 
+ * @param {*} shadows 
+ */
 // This is a function to model TextStyle in Flutter
 function TextStyle(fontFamily, color, fontSize, fontWeight, fontStyle, letterSpacing, height, shadows){
 
@@ -543,6 +680,14 @@ function TextStyle(fontFamily, color, fontSize, fontWeight, fontStyle, letterSpa
     this.shadows = shadows;
 }
 
+/*
+The functions below are used as common functions
+*/
+/**
+ * 
+ * @param {*} context 
+ * @param {*} layer 
+ */
 function layerHasGradient(context, layer) {
     return layer.fills.some(f => f.type === "gradient");
 }
