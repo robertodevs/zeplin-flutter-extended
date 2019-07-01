@@ -1,0 +1,11 @@
+{
+  "packageName": "zeplin-flutter-extended",
+  "name": "zeplin-flutter-extended",
+  "description": "Sample extension description.",
+  "version": "0.1.0",
+  "platforms": [
+    "web"
+  ],
+  "moduleURL": "./main.js",
+  "readmeURL": "./README.md"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "zeplin-flutter-extended",
+  "version": "0.1.0",
+  "description": "Sample extension description.",
+  "scripts": {
+    "start": "zem start",
+    "build": "zem build",
+    "clean": "zem clean",
+    "exec": "zem exec",
+    "publish": "zem publish"
+  },
+  "zeplin": {
+    "displayName": "zeplin-flutter-extended",
+    "platforms": [
+      "web"
+    ]
+  },
+  "dependencies": {
+    "zem": "^0.4.3"
+  }
+}
