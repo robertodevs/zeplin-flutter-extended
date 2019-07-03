@@ -9,6 +9,15 @@
     "exec": "zem exec",
     "publish": "zem publish"
   },
+  "author": {
+    "name": "Roberto Juarez",
+    "email": "roberto.juarez@int2.io",
+    "url": "https://www.int2.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roberto198907/zeplin-flutter-extended.git"
+  },
   "zeplin": {
     "displayName": "Flutter Extended",
     "platforms": [

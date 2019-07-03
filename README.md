@@ -12,7 +12,88 @@ Add the extension to your project from [extensions.zeplin.io](https://extensions
 
 ## Output
 
-#### `Container with Borders and Shadows` 
+#### Sample colors output
+```
+const Color black = const Color(0xff000000);
+const Color white = const Color(0xffffffff);
+const Color cloudyBlue = const Color(0xffbec4cd);
+const Color black = const Color(0xff333333);
+const Color blushPink = const Color(0xffff8993);
+
+```
+
+#### Sample text style output:
+```
+const TextStyle title = const TextStyle(
+    fontFamily: 'Montserrat',
+    color: Color(0xff000000),
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    fontStyle: FontStyle.normal, 
+    );
+const TextStyle PingFangSC—14pt = const TextStyle(
+    fontFamily: 'PingFangSC',
+    color: Color(0xff000000),
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal,
+    );
+
+```
+#### Sample layer output - `(Text with Shadows)` 
+
+```
+new Text("Color",
+    style: TextStyle(
+    fontFamily: 'Montserrat',
+    color: Color(0xfffefefe),
+    fontSize: 10,
+    fontWeight: FontWeight.w500,
+    fontStyle: FontStyle.normal,
+    
+    shadows: [BoxShadow(
+        color: Color(0x29646464),
+        offset: Offset(0,3),
+        blurRadius: 6,
+        spreadRadius: 0
+
+      )],
+    )
+)
+```
+
+#### Sample layer output - `(Text with multiple Styles)` 
+
+```
+RichText(
+    text: new TextSpan(
+    children: [
+      new TextSpan(
+        text: "EN | ",
+        style: TextStyle(
+        fontFamily: 'Segoe UI',
+        color: Color(0xfff4b326),
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        fontStyle: FontStyle.normal,
+        )
+      ),
+      new TextSpan(
+        text: "CH",
+        style: TextStyle(
+        fontFamily: 'Segoe UI',
+        color: Color(0xff444242),
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        fontStyle: FontStyle.normal,
+        )
+      ),
+    ]
+  )
+)
+```
+
+#### Sample layer output - `(Container with Borders and Shadows)` 
 
 ```
 new Container(
@@ -36,7 +117,7 @@ new Container(
 )
 ```
 
-#### `Container with Circular Borders` 
+#### Sample layer output - `Container with Circular Borders` 
 ```
 new Container(
   width: 103,
@@ -57,7 +138,7 @@ new Container(
 )
 ```
 
-#### `Container with Fill with Opacity` 
+#### Sample layer output - `Container with Fill with Opacity` 
 ```
 new Container(
   width: 169,
@@ -68,7 +149,7 @@ new Container(
 )
 ```
 
-#### `Container with LinearGradient` 
+#### Sample layer output - `Container with LinearGradient` 
 
 ```
 new Container(
@@ -92,7 +173,7 @@ new Container(
 
 ## Options
 
-There are several features to modify in the futere, first of them will be add more options to Gradients, adding two more Radial and Sweap. 
+There are several features to modify in the futere, first of them will be add more options to Gradients, Radial and Sweap Gradients. 
 
 ## Development
 
