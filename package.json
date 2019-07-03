@@ -1,6 +1,6 @@
 {
   "name": "zeplin-flutter-extended",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Flutter Extended version extension to generate Containers, BoxDecoration an its properties: Shadows, Borders, Gradients, and so on.",
   "scripts": {
     "start": "zem start",

@@ -1,11 +1,19 @@
 {
   "packageName": "zeplin-flutter-extended",
-  "name": "zeplin-flutter-extended",
-  "description": "Sample extension description.",
-  "version": "0.1.0",
+  "name": "Flutter Extended",
+  "description": "Flutter Extended version extension to generate Containers, BoxDecoration an its properties: Shadows, Borders, Gradients, and so on.",
+  "version": "0.1.1",
+  "author": {
+    "name": "Roberto Juarez",
+    "email": "roberto.juarez@int2.io",
+    "url": "https://www.int2.io"
+  },
   "platforms": [
-    "web"
+    "web",
+    "android",
+    "ios"
   ],
-  "moduleURL": "./main.js",
+  "moduleURL": "./main.51bf480b.js",
+  "repository": "https://github.com/roberto198907/zeplin-flutter-extended.git",
   "readmeURL": "./README.md"
 }
