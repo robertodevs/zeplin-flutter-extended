@@ -423,7 +423,7 @@ function convertTextStyleToDart(textStyle){
     // Evaluating if shadow exists
     if (textStyle.letterSpacing != null)
     {
-        letterSpacingElement = `letterSpacing:: ${textStyle.letterSpacing},`;
+        letterSpacingElement = `letterSpacing: ${textStyle.letterSpacing},`;
     }
     else{
         letterSpacingElement = "";
