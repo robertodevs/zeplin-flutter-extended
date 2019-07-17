@@ -173,10 +173,11 @@ new Container(
 
 ## Options
 
-There are several features to modify in the futere, first of them will be add more options to Gradients, Radial and Sweap Gradients. 
+There are several features to modify in the future, first of them will be add more options to Gradients, Radial and Sweap Gradients. 
 
-## Development
+## Developmentß
 
 This extension is developed using [zem](https://github.com/zeplin/zem), Zeplin Extension Manager. zem is a command line tool that lets you quickly create, test and publish extensions.
 
 To learn more about creating Zeplin extensions, [see documentation](https://github.com/zeplin/zeplin-extension-documentation).
+ß
