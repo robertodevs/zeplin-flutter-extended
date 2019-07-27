@@ -22,6 +22,10 @@ function layer(context, selectedLayer) {
 
         case 'group':
             // Missing to implement, it will in future versions
+            return {
+                code: `group`,
+                language: 'dart'
+            }
             break;
 
         default:
@@ -77,9 +81,10 @@ ${convertTextStylesListToDart(context).join("\n")}`;
 
 // }
 
-// function component(context, selectedVersion, selectedComponent) {
-
-// }
+//function component(context, selectedVersion, selectedComponent) {
+//
+//
+//}
 
 
 
@@ -124,19 +129,25 @@ function buildingBoxDecoration(context, layer){
     // Getting a new decoration Box
     var decoration = new BoxDecoration();
 
-    // Getting gradient 
-    decoration.gradient = getGradient(context, layer);
+    // Evaluating if the selected layer has Fills
 
-    // Without gradient
-    if (decoration.gradient == null){
-        // Without Gradient
-        decoration.color = new Color(
-            layer.fills[layer.fills.length -1].color.toHex().r, 
-            layer.fills[layer.fills.length -1].color.toHex().g, 
-            layer.fills[layer.fills.length -1].color.toHex().b,
-            layer.fills[layer.fills.length -1].color.toHex().a
-        );
+    if (layer.fills.length>0)
+    {
+        // Getting gradient 
+        decoration.gradient = getGradient(context, layer);
+
+        // Without gradient
+        if (decoration.gradient == null){
+            // Without Gradient
+            decoration.color = new Color(
+                layer.fills[layer.fills.length -1].color.toHex().r, 
+                layer.fills[layer.fills.length -1].color.toHex().g, 
+                layer.fills[layer.fills.length -1].color.toHex().b,
+                layer.fills[layer.fills.length -1].color.toHex().a
+            );
+        }
     }
+    
     // Getting Border
     decoration.border = getBorder(context, layer);
 
@@ -327,27 +338,31 @@ The functions below are used to generate Flutter Widgets Objects to DART CODE,
 function convertContainerToDart(container){
     var decorationElements = [];
 
-    if (container.decoration.color != null)
-    {
-        decorationElements.push(`color: ${convertColorToDart(container.decoration.color, container.decoration.opacity, false)}`);
-    }
-    if (container.decoration.border != null)
-    {
-        decorationElements.push(`border: ${convertBorderToDart(container.decoration.border)}`);
-    }
-    if (container.decoration.borderRadius != null)
-    {
-        decorationElements.push(`\t\tborderRadius: BorderRadius.circular(${container.decoration.borderRadius})`);
+    if (container.decoration != null){
+        if (container.decoration.color != null)
+        {
+            decorationElements.push(`color: ${convertColorToDart(container.decoration.color, container.decoration.opacity, false)}`);
+        }
+        if (container.decoration.border != null)
+        {
+            decorationElements.push(`border: ${convertBorderToDart(container.decoration.border)}`);
+        }
+        if (container.decoration.borderRadius != null)
+        {
+            decorationElements.push(`\t\tborderRadius: BorderRadius.circular(${container.decoration.borderRadius})`);
+        }
+    
+        if (container.decoration.gradient != null){
+            decorationElements.push(`\t\tgradient: ${convertGradientToDart(container.decoration.gradient)}`);
+        }
+    
+        if(container.decoration.shadows != null){
+            decorationElements.push(`\t\tboxShadow: ${convertShadowsToDart(container.decoration.shadows)}`);
+    
+        }
     }
 
-    if (container.decoration.gradient != null){
-        decorationElements.push(`\t\tgradient: ${convertGradientToDart(container.decoration.gradient)}`);
-    }
-
-    if(container.decoration.shadows != null){
-        decorationElements.push(`\t\tboxShadow: ${convertShadowsToDart(container.decoration.shadows)}`);
-
-    }
+    
     return `new Container(
   width: ${container.width},
   height: ${container.height},
@@ -445,6 +460,7 @@ function convertTextStyleToDart(textStyle){
  * @param {*} gradient 
  */
 function convertGradientToDart(gradient){
+
     if (gradient.type === 'linear'){
         return `LinearGradient(colors: [${gradient.colors.map(
             colorHex => {
@@ -457,7 +473,19 @@ function convertGradientToDart(gradient){
     )`;
     }
 
-    return `Color(0x${color.a}${color.r}${color.g}${color.b})`;
+    else if (gradient.type === 'radial'){
+        return `RadialGradient(colors: [${gradient.colors.map(
+            colorHex => {
+                return  convertColorToDart(colorHex,1, true)
+            }
+            )} ],
+    stops: [
+        ${gradient.stops.join(",\n\t\t\t\t")}
+    ]
+    )`;  
+    }
+
+    return ``;
 
 }
 
@@ -696,7 +724,7 @@ function layerHasGradient(context, layer) {
 export default {
     layer,
     // screen,
-    // component,
+    //component,
     colors,
     textStyles,
     exportColors,
