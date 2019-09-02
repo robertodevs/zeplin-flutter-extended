@@ -173,7 +173,7 @@ new Container(
 
 ## Options
 
-There are several features to modify in the future, first of them will be add more options to Gradients, Radial and Sweap Gradients. 
+There are several features to modify in the future, first of them will be add more options to Gradients, Radial and Sweap Gradients. If this is extension is useful for you and you want to support me [buy me a coffe!](https://www.buymeacoffee.com/SaNhE76x9)
 
 ## Developmentß
 
