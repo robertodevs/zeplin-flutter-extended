@@ -1,5 +1,4 @@
 function layer(context, selectedLayer) {
-
     switch(selectedLayer.type) {
         case 'text':
             // Getting text information for one specific TextStyle
@@ -15,7 +14,7 @@ function layer(context, selectedLayer) {
             var container = getContainer(context, selectedLayer);
 
             return {
-                code: convertContainerToDart(container),
+                code: convertContainerToDart(container, context),
                 language: 'dart'
             }
             break;
@@ -77,14 +76,21 @@ ${convertTextStylesListToDart(context).join("\n")}`;
     }
 }
 
-// function screen(context, selectedVersion, selectedScreen) {
+function screen(context, selectedVersion, selectedScreen) {
+    return{
+        code: 'Cooming soon',
+        filename: `${context.project.name}TextStyles.dart`,
+        language: "dart"
+    }
+}
 
-// }
-
-//function component(context, selectedVersion, selectedComponent) {
-//
-//
-//}
+function component(context, selectedVersion, selectedComponent) {
+    return{
+        code: 'Cooming soon',
+        filename: `${context.project.name}TextStyles.dart`,
+        language: "dart"
+    }
+}
 
 
 
@@ -174,7 +180,6 @@ function buildingBoxDecoration(context, layer){
  */
 function getTextElement(context, layer){
     var body;
-
     if (layer.textStyles.length > 1){
         // List of TextSpans
         var textSpans = [];
@@ -202,7 +207,7 @@ function getTextElement(context, layer){
             }
         );
 
-        body = convertRichTextToDart(textSpans);
+        body = convertRichTextToDart(textSpans, context);
 
     }
     else if (layer.textStyles.length == 1)
@@ -222,11 +227,38 @@ function getTextElement(context, layer){
                 layer.textStyles[0].textStyle.lineHeight ,
                 getShadows(context, layer.shadows)
                 )
-            )
+            ), context
         )
     }
     
     return body;
+}
+
+/**
+ * 
+ * @param {*} context has all elements from the entire project
+ * @param {*} color to evaluate if exists on the project 
+ */
+function getColorNameFromProject(context, color){
+    // The color must be the object from Zepli Model not DART
+    colors = [];
+    var colorName = '';
+    // It is important to evaluate before map the colors
+    // if the context is not null
+    if(context != null){
+        context.project.colors.map(
+            colorMap => {
+                // Evaluating if the color exists for the project
+                var dartColor = new Color(colorMap.toHex().r, colorMap.toHex().g,colorMap.toHex().b, colorMap.toHex().a)
+                // Both colors must be object dart colors model
+                if (equalsColor(dartColor, color)){
+                    // The name of the color will show instead of hex code
+                    colorName = colorMap.name;
+                }
+            }
+        );
+    }
+    return colorName;
 }
 
 /**
@@ -335,17 +367,17 @@ The functions below are used to generate Flutter Widgets Objects to DART CODE,
  * 
  * @param {*} container 
  */
-function convertContainerToDart(container){
+function convertContainerToDart(container, context){
     var decorationElements = [];
 
     if (container.decoration != null){
         if (container.decoration.color != null)
         {
-            decorationElements.push(`color: ${convertColorToDart(container.decoration.color, container.decoration.opacity, false)}`);
+            decorationElements.push(`color: ${convertColorToDart(container.decoration.color, container.decoration.opacity, false, context)}`);
         }
         if (container.decoration.border != null)
         {
-            decorationElements.push(`border: ${convertBorderToDart(container.decoration.border)}`);
+            decorationElements.push(`border: ${convertBorderToDart(container.decoration.border, context)}`);
         }
         if (container.decoration.borderRadius != null)
         {
@@ -353,11 +385,11 @@ function convertContainerToDart(container){
         }
     
         if (container.decoration.gradient != null){
-            decorationElements.push(`\t\tgradient: ${convertGradientToDart(container.decoration.gradient)}`);
+            decorationElements.push(`\t\tgradient: ${convertGradientToDart(container.decoration.gradient, context)}`);
         }
     
         if(container.decoration.shadows != null){
-            decorationElements.push(`\t\tboxShadow: ${convertShadowsToDart(container.decoration.shadows)}`);
+            decorationElements.push(`\t\tboxShadow: ${convertShadowsToDart(container.decoration.shadows, context)}`);
     
         }
     }
@@ -377,8 +409,9 @@ function convertContainerToDart(container){
  * @param {*} color 
  * @param {*} opacity 
  * @param {*} multipleColors 
+ * @param {*} context 
  */
-function convertColorToDart(color, opacity, multipleColors){
+function convertColorToDart(color, opacity, multipleColors, context){
 
     var space;
     if (multipleColors){
@@ -390,7 +423,13 @@ function convertColorToDart(color, opacity, multipleColors){
     if (opacity < 1){
         return `${space}Color(0x${color.a}${color.r}${color.g}${color.b}).withOpacity(${opacity})`;
     }
-
+    // Evaluating if the color exists
+    // If '' is returned the color does not exist
+    var colorName = getColorNameFromProject(context, color);
+    // Assigning the new color name 
+    if(colorName != ''){
+        return `${space}${colorName}`;
+    }
     return `${space}Color(0x${color.a}${color.r}${color.g}${color.b})`;
 
 }
@@ -399,10 +438,10 @@ function convertColorToDart(color, opacity, multipleColors){
  * 
  * @param {*} textSelected 
  */
-function convertTextToDart(textSelected){
+function convertTextToDart(textSelected, context){
 
     return `new Text("${textSelected.text}",
-    style: ${convertTextStyleToDart(textSelected.textStyle)}
+    style: ${convertTextStyleToDart(textSelected.textStyle, context)}
 )`;
 
 }
@@ -410,19 +449,20 @@ function convertTextToDart(textSelected){
  * 
  * @param {*} textSelected 
  */
-function convertTextSpanToDart(textSelected){
+function convertTextSpanToDart(textSelected, context){
 
     return `\n\tnew TextSpan(
     text: "${textSelected.text}",
-    style: ${convertTextStyleToDart(textSelected.textStyle)}
+    style: ${convertTextStyleToDart(textSelected.textStyle, context)}
     )`;
 
 }
 /**
  * 
  * @param {*} textStyle 
+ * @param {*} context
  */
-function convertTextStyleToDart(textStyle){
+function convertTextStyleToDart(textStyle, context){
     var shadowElements;
     var letterSpacingElement;
 
@@ -446,7 +486,7 @@ function convertTextStyleToDart(textStyle){
 
     return `TextStyle(
     fontFamily: '${textStyle.fontFamily}',
-    color: ${convertColorToDart(textStyle.color, 1, false)},
+    color: ${convertColorToDart(textStyle.color, 1, false, context)},
     fontSize: ${textStyle.fontSize},
     fontWeight: FontWeight.w${textStyle.fontWeight},
     fontStyle: FontStyle.${textStyle.fontStyle},
@@ -458,13 +498,14 @@ function convertTextStyleToDart(textStyle){
 /**
  * 
  * @param {*} gradient 
+ * @param {*} context 
  */
-function convertGradientToDart(gradient){
+function convertGradientToDart(gradient, context){
 
     if (gradient.type === 'linear'){
         return `LinearGradient(colors: [${gradient.colors.map(
             colorHex => {
-                return  convertColorToDart(colorHex,1, true)
+                return  convertColorToDart(colorHex,1, true, context)
             }
             )} ],
     stops: [
@@ -476,7 +517,7 @@ function convertGradientToDart(gradient){
     else if (gradient.type === 'radial'){
         return `RadialGradient(colors: [${gradient.colors.map(
             colorHex => {
-                return  convertColorToDart(colorHex,1, true)
+                return  convertColorToDart(colorHex,1, true, context)
             }
             )} ],
     stops: [
@@ -492,12 +533,13 @@ function convertGradientToDart(gradient){
 /**
  * 
  * @param {*} shadows 
+ * @param {*} context 
  */
-function convertShadowsToDart(shadows){
+function convertShadowsToDart(shadows, context){
 
     return `[${shadows.map(
         shadow => {
-            return  convertBoxShadowToDart(shadow)
+            return  convertBoxShadowToDart(shadow, context)
         }
         )} ],
 `;
@@ -506,10 +548,11 @@ function convertShadowsToDart(shadows){
 /**
  * 
  * @param {*} shadow 
+ * @param {*} context 
  */
-function convertBoxShadowToDart(shadow){
+function convertBoxShadowToDart(shadow, context){
     return `BoxShadow(
-        color: ${convertColorToDart(shadow.color,1, false)},
+        color: ${convertColorToDart(shadow.color,1, false, context)},
         offset: Offset(${shadow.offsetx},${shadow.offsety}),
         blurRadius: ${shadow.blurRadius},
         spreadRadius: ${shadow.spreadRadius}
@@ -520,10 +563,11 @@ function convertBoxShadowToDart(shadow){
 /**
  * 
  * @param {*} border 
+ * @param {*} context 
  */
-function convertBorderToDart(border){
+function convertBorderToDart(border, context){
     return `Border.all(
-      color: ${convertColorToDart(border.color,1, false)},
+      color: ${convertColorToDart(border.color,1, false, context)},
       width: ${border.width}
     )`;
     
@@ -560,7 +604,7 @@ function convertTextStylesListToDart(context){
                     textStyleMap.letterSpacing,
                     textStyleMap.lineHeight ,
                     getShadows(context, [])
-                    )
+                    ), context
                 )};`)
             
         }
@@ -572,14 +616,14 @@ function convertTextStylesListToDart(context){
  * 
  * @param {*} textSpans 
  */
-function convertRichTextToDart(textSpans){
+function convertRichTextToDart(textSpans, context){
     
 
     return `RichText(
     text: new TextSpan(
     children: [
     ${textSpans.map( textSpan =>
-        {return convertTextSpanToDart(textSpan)}
+        {return convertTextSpanToDart(textSpan, context)}
         )},
     ]
   )
@@ -640,6 +684,15 @@ function Color(r,g,b,a){
     this.g = g;
     this.b = b;
     this.a = a;
+}
+
+function equalsColor(color1, color2){
+    if (color1.r == color2.r && 
+        color1.g == color2.g && 
+        color1.b == color2.b && 
+        color1.a == color2.a )
+        return true;
+    return false;
 }
 
 /**
@@ -723,8 +776,8 @@ function layerHasGradient(context, layer) {
 
 export default {
     layer,
-    // screen,
-    //component,
+    screen,
+    component,
     colors,
     textStyles,
     exportColors,

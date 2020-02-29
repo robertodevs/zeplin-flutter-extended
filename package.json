@@ -21,7 +21,9 @@
   "zeplin": {
     "displayName": "Flutter Extended",
     "platforms": [
-      "web", "android", "ios"
+      "web",
+      "android",
+      "ios"
     ]
   },
   "dependencies": {
