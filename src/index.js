@@ -86,7 +86,7 @@ function screen(context, selectedVersion, selectedScreen) {
 
 function component(context, selectedVersion, selectedComponent) {
     return{
-        code: 'Cooming soon',
+        code: 'Cooming soon...',
         filename: `${context.project.name}TextStyles.dart`,
         language: "dart"
     }
