@@ -2,6 +2,10 @@
     <img src="img/flutterlogo.png" alt="Flutter Logo" />
 </p>
 
+
+<a href="https://www.buymeacoffee.com/SaNhE76x9" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 217px !important;" ></a>
+
+
 # Flutter Extended Zeplin Extension 💻
 
 This is a new Flutter Extended version of the actual extension to help a lot of people who need more components than TextStyles and Colors and RichTexts. With this new one you have the opportunity to have more info about Widgets, for example, generate Container elements, BoxDecoration Widget with Shadows, Linear Gradients, Fills, Borders, Opacity and several components more. Coming soon RadialGradient and SweapGradient and also Components as buttons and others. 
@@ -173,10 +177,12 @@ new Container(
 
 ## Options
 
-There are several features to modify in the futere, first of them will be add more options to Gradients, Radial and Sweap Gradients. 
+There are several features to modify in the future, first of them will be add more options to Gradients, Radial and Sweap Gradients. If this is extension is useful for you and you want to support me [buy me a coffe!](https://www.buymeacoffee.com/SaNhE76x9)
 
-## Development
+
+## Developmentß
 
 This extension is developed using [zem](https://github.com/zeplin/zem), Zeplin Extension Manager. zem is a command line tool that lets you quickly create, test and publish extensions.
 
 To learn more about creating Zeplin extensions, [see documentation](https://github.com/zeplin/zeplin-extension-documentation).
+ß
