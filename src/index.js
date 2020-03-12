@@ -315,15 +315,20 @@ function getBorder(context, layer){
 
     // Adding Shadows to the Layer
     if(layer.borders.length > 0){
-        return new Border(
-            new Color(
-                layer.borders[layer.borders.length -1].fill.color.toHex().r, 
-                layer.borders[layer.borders.length -1].fill.color.toHex().g,
-                layer.borders[layer.borders.length -1].fill.color.toHex().b, 
-                layer.borders[layer.borders.length -1].fill.color.toHex().a
-            ),
-            layer.borders[layer.borders.length -1].thickness,
-        );
+        const lastBorder = layer.borders[layer.borders.length -1];
+        if (lastBorder.fill == "color") {
+            return new Border(
+                new Color(
+                    lastBorder.fill.color.toHex().r, 
+                    lastBorder.fill.color.toHex().g,
+                    lastBorder.fill.color.toHex().b, 
+                    lastBorder.fill.color.toHex().a
+                ),
+                lastBorder.thickness,
+            );
+        } else {
+            return null;
+        }
     }
 
     else{
