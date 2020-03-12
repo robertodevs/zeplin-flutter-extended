@@ -500,6 +500,14 @@ function convertTextStyleToDart(textStyle, context){
     )`;
 
 }
+
+function angleToPoint(degrees) {
+    return {
+        x: Math.sin(degrees / 180.0 * Math.PI),
+        y: -1.0 * Math.cos(degrees / 180.0 * Math.PI),
+    };
+}
+
 /**
  * 
  * @param {*} gradient 
@@ -508,14 +516,26 @@ function convertTextStyleToDart(textStyle, context){
 function convertGradientToDart(gradient, context){
 
     if (gradient.type === 'linear'){
-        return `LinearGradient(colors: [${gradient.colors.map(
+        const angle = gradient.angle || 90;
+        const end = angleToPoint(angle);
+        const begin = {
+            x : -end.x,
+            y : -end.y,
+        };
+
+        return `LinearGradient(
+    colors: [${gradient.colors.map(
             colorHex => {
                 return  convertColorToDart(colorHex,1, true, context)
             }
             )} ],
     stops: [
         ${gradient.stops.join(",\n\t\t\t\t")}
-    ]
+    ],
+    begin: Alignment(${begin.x.toFixed(2)}, ${begin.y.toFixed(2)}),
+    end: Alignment(${end.x.toFixed(2)}, ${end.y.toFixed(2)}),
+    // angle: ${gradient.angle},
+    // scale: ${gradient.scale},
     )`;
     }
 
@@ -665,12 +685,14 @@ function BoxShadow(color, offsetx, offsety, blurRadius, spreadRadius){
  * @param {*} colors 
  * @param {*} stops 
  * @param {*} angle 
+ * @param {*} scale 
  */
-function Gradient(type, colors, stops, angle){
+function Gradient(type, colors, stops, angle, scale){
     this.type = type;
     this.colors = colors;
     this.stops = stops;
     this.angle = angle;
+    this.scale = scale;
 }
 
 /**
