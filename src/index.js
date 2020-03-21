@@ -315,15 +315,20 @@ function getBorder(context, layer){
 
     // Adding Shadows to the Layer
     if(layer.borders.length > 0){
-        return new Border(
-            new Color(
-                layer.borders[layer.borders.length -1].fill.color.toHex().r, 
-                layer.borders[layer.borders.length -1].fill.color.toHex().g,
-                layer.borders[layer.borders.length -1].fill.color.toHex().b, 
-                layer.borders[layer.borders.length -1].fill.color.toHex().a
-            ),
-            layer.borders[layer.borders.length -1].thickness,
-        );
+        const lastBorder = layer.borders[layer.borders.length -1];
+        if (lastBorder.fill == "color") {
+            return new Border(
+                new Color(
+                    lastBorder.fill.color.toHex().r, 
+                    lastBorder.fill.color.toHex().g,
+                    lastBorder.fill.color.toHex().b, 
+                    lastBorder.fill.color.toHex().a
+                ),
+                lastBorder.thickness,
+            );
+        } else {
+            return null;
+        }
     }
 
     else{
@@ -495,6 +500,14 @@ function convertTextStyleToDart(textStyle, context){
     )`;
 
 }
+
+function angleToPoint(degrees) {
+    return {
+        x: Math.sin(degrees / 180.0 * Math.PI),
+        y: -1.0 * Math.cos(degrees / 180.0 * Math.PI),
+    };
+}
+
 /**
  * 
  * @param {*} gradient 
@@ -503,14 +516,26 @@ function convertTextStyleToDart(textStyle, context){
 function convertGradientToDart(gradient, context){
 
     if (gradient.type === 'linear'){
-        return `LinearGradient(colors: [${gradient.colors.map(
+        const angle = gradient.angle || 90;
+        const end = angleToPoint(angle);
+        const begin = {
+            x : -end.x,
+            y : -end.y,
+        };
+
+        return `LinearGradient(
+    colors: [${gradient.colors.map(
             colorHex => {
                 return  convertColorToDart(colorHex,1, true, context)
             }
             )} ],
     stops: [
         ${gradient.stops.join(",\n\t\t\t\t")}
-    ]
+    ],
+    begin: Alignment(${begin.x.toFixed(2)}, ${begin.y.toFixed(2)}),
+    end: Alignment(${end.x.toFixed(2)}, ${end.y.toFixed(2)}),
+    // angle: ${gradient.angle},
+    // scale: ${gradient.scale},
     )`;
     }
 
@@ -660,12 +685,14 @@ function BoxShadow(color, offsetx, offsety, blurRadius, spreadRadius){
  * @param {*} colors 
  * @param {*} stops 
  * @param {*} angle 
+ * @param {*} scale 
  */
-function Gradient(type, colors, stops, angle){
+function Gradient(type, colors, stops, angle, scale){
     this.type = type;
     this.colors = colors;
     this.stops = stops;
     this.angle = angle;
+    this.scale = scale;
 }
 
 /**
