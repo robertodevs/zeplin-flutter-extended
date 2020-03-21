@@ -444,8 +444,7 @@ function convertColorToDart(color, opacity, multipleColors, context){
  * @param {*} textSelected 
  */
 function convertTextToDart(textSelected, context){
-
-    return `new Text("${textSelected.text}",
+    return `new Text(${JSON.stringify(textSelected.text)},
     style: ${convertTextStyleToDart(textSelected.textStyle, context)}
 )`;
 
@@ -457,7 +456,7 @@ function convertTextToDart(textSelected, context){
 function convertTextSpanToDart(textSelected, context){
 
     return `\n\tnew TextSpan(
-    text: "${textSelected.text}",
+    text: ${JSON.stringify(textSelected.text)},
     style: ${convertTextStyleToDart(textSelected.textStyle, context)}
     )`;
 
