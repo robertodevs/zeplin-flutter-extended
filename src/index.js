@@ -378,7 +378,7 @@ function convertContainerToDart(container, context){
     if (container.decoration != null){
         if (container.decoration.color != null)
         {
-            decorationElements.push(`color: ${convertColorToDart(container.decoration.color, container.decoration.opacity, false, context)}`);
+            decorationElements.push(`color: ${convertColorToDart(container.decoration.color, 1, false, context)}`);
         }
         if (container.decoration.border != null)
         {
@@ -399,14 +399,32 @@ function convertContainerToDart(container, context){
         }
     }
 
+    let containerCode = `new Container(
+        width: ${container.width},
+        height: ${container.height},
+        decoration: new BoxDecoration(
+          ${decorationElements.join(",\n")}
+        )
+      )`;
+
+    // opacity is applied to the whole container, this way it affects its gradient (or color), border and shadows
+    if (container.decoration.opacity != null && container.decoration.opacity < 1.0) {
+        // we wrap the Opacity in a stack for the purpose of enabling the developer putting a widget inside
+        // that is not affected by the opacity (the empty Container() inside Positioned.fill)
+        containerCode = `Stack(
+            children: <Widget>[
+                Opacity(
+                    opacity: ${container.decoration.opacity},
+                    child: ${containerCode},
+                ),
+                Positioned.fill(
+                    child: Container(),
+                ),
+            ],
+            )`;
+    }
     
-    return `new Container(
-  width: ${container.width},
-  height: ${container.height},
-  decoration: new BoxDecoration(
-    ${decorationElements.join(",\n")}
-  )
-)`
+    return containerCode;
 }
 
 /**
@@ -444,8 +462,7 @@ function convertColorToDart(color, opacity, multipleColors, context){
  * @param {*} textSelected 
  */
 function convertTextToDart(textSelected, context){
-
-    return `new Text("${textSelected.text}",
+    return `new Text(${JSON.stringify(textSelected.text)},
     style: ${convertTextStyleToDart(textSelected.textStyle, context)}
 )`;
 
@@ -457,7 +474,7 @@ function convertTextToDart(textSelected, context){
 function convertTextSpanToDart(textSelected, context){
 
     return `\n\tnew TextSpan(
-    text: "${textSelected.text}",
+    text: ${JSON.stringify(textSelected.text)},
     style: ${convertTextStyleToDart(textSelected.textStyle, context)}
     )`;
 
