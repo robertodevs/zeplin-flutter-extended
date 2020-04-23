@@ -188,6 +188,7 @@ function getTextElement(context, layer){
                 textSpans.push(
                     new Text(
                         layer.content.substring(textSpan.range.start, textSpan.range.end),
+                        null,
                         new TextStyle(
                             textSpan.textStyle.fontFamily,
                             new Color(
@@ -207,12 +208,13 @@ function getTextElement(context, layer){
             }
         );
 
-        body = convertRichTextToDart(textSpans, context);
+        body = convertRichTextToDart(textSpans, layer.textStyles[0].textStyle.textAlign, context);
 
     }
     else if (layer.textStyles.length == 1)
     {
         body = convertTextToDart(new Text(layer.content, 
+            layer.textStyles[0].textStyle.textAlign,
             new TextStyle(
                 layer.textStyles[0].textStyle.fontFamily,
                 new Color(
@@ -462,7 +464,9 @@ function convertColorToDart(color, opacity, multipleColors, context){
  * @param {*} textSelected 
  */
 function convertTextToDart(textSelected, context){
-    return `new Text(${JSON.stringify(textSelected.text)},
+    const textAlign = (textSelected.textAlign == null) ? "" :
+     "\n    textAlign: TextAlign." + textSelected.textAlign + ",";
+    return `new Text(${JSON.stringify(textSelected.text)},${textAlign}
     style: ${convertTextStyleToDart(textSelected.textStyle, context)}
 )`;
 
@@ -658,10 +662,12 @@ function convertTextStylesListToDart(context){
  * 
  * @param {*} textSpans 
  */
-function convertRichTextToDart(textSpans, context){
+function convertRichTextToDart(textSpans, textAlign, context){
     
+    textAlign = (textAlign == null) ? "" :
+     "\n    textAlign: TextAlign." + textAlign + ",";
 
-    return `RichText(
+    return `RichText(${textAlign}
     text: new TextSpan(
     children: [
     ${textSpans.map( textSpan =>
@@ -774,11 +780,13 @@ function BoxDecoration(color, border, borderRadius, shadows, gradient, opacity){
 /**
  * 
  * @param {*} text 
+ * @param {*} textAlign 
  * @param {*} textStyle 
  */
 // This is a funtion to model Text in Flutter
-function Text(text, textStyle){
+function Text(text, textAlign, textStyle){
     this.text = text;
+    this.textAlign = textAlign;
     this.textStyle = textStyle;
 }
 /**
